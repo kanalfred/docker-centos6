@@ -14,6 +14,8 @@
 #      docker run -h centos6 --name centos6 -p 192.168.3.129:22:22 -d -v /home/alfred/docker/data/centos6:/home/alfred/doc --restart=always kanalfred/centos6
 #   # specify own user & passwd 
 #      docker run -h centos6 --name centos6 -e USER='alfred' -e PASSWD='xxxx' -p 192.168.3.129:22:22 -d -v /home/alfred/docker/data/centos6:/home/alfred/doc --restart=always kanalfred/centos6
+#   # specify Build root passwd 
+#     docker build --build-arg PASSWD='xxxx' -t kanalfred/centos6 .
 # 
 ##############################
 
