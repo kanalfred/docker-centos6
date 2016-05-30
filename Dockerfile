@@ -20,49 +20,57 @@
 FROM centos:centos6
 MAINTAINER Alfred Kan <kanalfred@gmail.com>
 
+#################
 # Users
-#RUN useradd -ms /bin/bash newuser
-#RUN usermod -u 1000 hostadmin
-ENV USER alfred
-ENV PASSWD test123
+#ENV USER alfred
+#ENV PASSWD test123
 
-RUN adduser --uid 1000 --gid 50 $USER \
-        && echo $PASSWD | passwd $USER --stdin
-RUN adduser --uid 500 hostadmin \
-        && echo $PASSWD | passwd hostadmin --stdin
-
-# add user pub key
-#ADD authorized_keys2 /home/$USERRUN/.ssh/authorized_keys2
-
-# root password
-# RUN echo 'root:screencast' | chpasswd
-
-# Epel
-ADD epel-release-6-8.noarch.rpm /tmp/epel-release-6-8.noarch.rpm
-
-#sudo yum install epel-release
-# Install require packages
-#RUN yum update -y && yum clean all \
-RUN yum install -y /tmp/epel-release-6-8.noarch.rpm \
-        && yum install -y sudo
+#RUN adduser --uid 1000 --gid 50 $USER \
+#        && echo $PASSWD | passwd $USER --stdin
+#RUN adduser --uid 500 hostadmin \
+#        && echo $PASSWD | passwd hostadmin --stdin
 
 # Sudoer
-ADD wheel_sudo.conf /etc/sudoers.d/wheel
-RUN chmod 0600 /etc/sudoers.d/wheel \
-        && usermod -a -G wheel $USER
+#ADD wheel_sudo.conf /etc/sudoers.d/wheel
+#RUN chmod 0600 /etc/sudoers.d/wheel \
+#        && usermod -a -G wheel $USER
+#################
+
+
+# Add key for root user
+ADD container-files/key/authorized_keys2 /root/.ssh/authorized_keys2
+
+# root password
+RUN echo 'root:@Docker!' | chpasswd
+
+# Epel
+ADD container-files/rpm/epel-release-6-8.noarch.rpm /tmp/epel-release-6-8.noarch.rpm
+
+#sudo yum install epel-release
+#RUN yum update -y && yum clean all \
+#RUN rpm -Uvh /tmp/epel-release-6-8.noarch.rpm \
+
+# Install require packages
+RUN \ 
+    yum install -y \
+	# EPEL Repo
+        /tmp/epel-release-6-8.noarch.rpm \
+
+	# Packages
+	openssh-server \
+        sudo 
+
 
 # SSH setup
-RUN yum -y install openssh-server \
-    && chkconfig sshd on
+RUN chkconfig sshd on
 
 # disalbe GSSAPIAuthentication=no for ssh
-
 
 # EXPOSE
 EXPOSE 22
 
 # Clean YUM caches to minimise Docker image size
-yum clean all && rm -rf /tmp/yum*
+RUN yum clean all && rm -rf /tmp/yum*
 
 # CMD
 #CMD ["/usr/sbin/sshd", "-D"]
