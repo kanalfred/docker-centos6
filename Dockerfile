@@ -20,10 +20,12 @@
 FROM centos:centos6
 MAINTAINER Alfred Kan <kanalfred@gmail.com>
 
+ARG PASSWD @Docker!
+
 #################
 # Users
 #ENV USER alfred
-#ENV PASSWD test123
+#ENV PASSWD @Docker!
 
 #RUN adduser --uid 1000 --gid 50 $USER \
 #        && echo $PASSWD | passwd $USER --stdin
@@ -41,7 +43,7 @@ MAINTAINER Alfred Kan <kanalfred@gmail.com>
 ADD container-files/key/authorized_keys2 /root/.ssh/authorized_keys2
 
 # root password
-RUN echo 'root:@Docker!' | chpasswd
+RUN echo "root:$PASSWD" | chpasswd
 
 # Epel
 ADD container-files/rpm/epel-release-6-8.noarch.rpm /tmp/epel-release-6-8.noarch.rpm
