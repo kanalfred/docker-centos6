@@ -1,0 +1,14 @@
+[Unit]
+Description=My Service
+After=docker.service
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill centos6
+ExecStartPre=-/usr/bin/docker rm centos6
+ExecStartPre=/usr/bin/docker pull kanalfred/centos6
+ExecStart=/usr/bin/docker run -h centos6 -p 2200:22 --name centos6 kanalfred/centos6
+ExecStop=/usr/bin/docker stop centos6
+
+[X-Fleet]
+MachineID="4f32b16cf79a42bab6bc13d9fcefc655"
