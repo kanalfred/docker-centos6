@@ -24,7 +24,7 @@ MAINTAINER Alfred Kan <kanalfred@gmail.com>
 #RUN useradd -ms /bin/bash newuser
 #RUN usermod -u 1000 hostadmin
 ENV USER alfred
-ENV PASSWD landmark5!
+ENV PASSWD test123
 
 RUN adduser --uid 1000 --gid 50 $USER \
         && echo $PASSWD | passwd $USER --stdin
@@ -73,10 +73,10 @@ CMD ["/sbin/init", "-D"]
 #image: "postgres:${POSTGRES_VERSION}"
 
 # Run
-#docker run -h centos6 -e USER='alfred' -e PASSWD='landmarkxx' -P -d --name centos6 --restart=always kanalfred/centos6
+#docker run -h centos6 -e USER='alfred' -e PASSWD='xxxx' -P -d --name centos6 --restart=always kanalfred/centos6
 #docker run -h centos6 -p 2200:22 -d --name centos6 -v /home/alfred/docker/data/centos6:/home/alfred/doc kanalfred/centos6
 #docker run -h centos6 -p 192.168.3.129:22:22 -d --name centos6 -v /home/alfred/docker/data/centos6:/home/alfred/doc kanalfred/centos6
 
 # Mysql
-#docker run --name mysql -p 3307:3306 -v /home/alfred/docker/data/db:/var/lib/mysql -e MYSQL_ROOT_PASSWORD='landmark5!' -d mysql
-#docker run --name mysql -p 192.168.3.128:3307:3306 -v /home/alfred/docker/data/db:/var/lib/mysql -e MYSQL_ROOT_PASSWORD='landmark5!' -d mysql
+#docker run --name mysql -p 3307:3306 -v /home/alfred/docker/data/db:/var/lib/mysql -e MYSQL_ROOT_PASSWORD='xxxx' -d mysql
+#docker run --name mysql -p 192.168.3.128:3307:3306 -v /home/alfred/docker/data/db:/var/lib/mysql -e MYSQL_ROOT_PASSWORD='xxxx' -d mysql
